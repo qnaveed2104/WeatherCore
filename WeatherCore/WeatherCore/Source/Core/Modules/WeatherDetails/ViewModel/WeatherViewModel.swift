@@ -9,6 +9,7 @@ import Foundation
 
 protocol WeatherViewModelProtocol: ObservableObject {
     var service: WeatherServiceProtocol { get }
+    func fetchWeatherData() async
 }
 
 class WeatherViewModel: WeatherViewModelProtocol {
@@ -16,15 +17,15 @@ class WeatherViewModel: WeatherViewModelProtocol {
     
     init(service: WeatherServiceProtocol) {
         self.service = service
-        Task {
-            await fetchWeatherData()
-        }
     }
-    
-    private func fetchWeatherData() async {
+        
+    func fetchWeatherData() async {
         do {
-            let weatherDisplayData = try await service.loadWeatherForecast()
-            print(weatherDisplayData)
+            async let currentWeather = service.loadCurrentWeather()
+            async let weatherForecast = service.loadWeatherForecast()
+            let (currentWeatherData, weatherForecastDate) = try await (currentWeather, weatherForecast)
+            
+            print("sdffsdf")
         } catch {
             print(error)
         }

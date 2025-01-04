@@ -36,6 +36,10 @@ public final class WeatherSDK {
             builder: requestBuilder
         )
         let weatherservice: WeatherServiceProtocol = WeatherService(repository: weatherRepository)
-        return WeatherViewModel(service: weatherservice)
+        let viewModel: WeatherViewModel =  WeatherViewModel(service: weatherservice)
+        Task {
+            await viewModel.fetchWeatherData()
+        }
+        return viewModel
     }
 }
