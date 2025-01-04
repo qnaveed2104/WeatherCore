@@ -14,6 +14,6 @@ class MainViewModel: ObservableObject {
     }
     
     func getWeatherSDKView( ) -> AnyView {
-        return AnyView(weatherSdk?.getWeather(city: "London"))
+        return AnyView(weatherSdk?.getWeather())
     }
 }

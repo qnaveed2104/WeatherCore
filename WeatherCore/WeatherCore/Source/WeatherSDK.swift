@@ -18,18 +18,17 @@ public final class WeatherSDK {
     public var configuration: Configurations
 
     public init(configuration: Configurations) {
-        
         self.configuration = configuration
     }
     /// Returns the  view with the city weather details
     /// - Parameter city: name of city whch details to be feteched
     /// - Returns: View that show the details of the weather
-    func getWeather(city: String) -> AnyView {
-        let viewModel = createWeatherViewModel(city: city)
+    func getWeather() -> AnyView {
+        let viewModel = createWeatherViewModel()
         return AnyView(WeatherView(viewModel: viewModel))
     }
     
-    private func createWeatherViewModel(city: String) -> WeatherViewModel {
+    private func createWeatherViewModel() -> WeatherViewModel {
         let apiClient: APIClientProtocol = APIClient()
         let requestBuilder: WeatherRequestBuilderProtocol = WeatherRequestBuilder(configurations: configuration)
         let weatherRepository: WeatherRepositoryProtocol = WeatherRepository(
