@@ -1,0 +1,22 @@
+disabled_rules: # rule identifiers to exclude from running
+  - trailing_whitespace
+  #- line_length
+
+included: # paths to include during linting
+  - WeatherCore/
+  - WeatherCoreTests/
+
+excluded: # paths to ignore during linting
+  - Pods
+  - Carthage
+
+# Opt-in rules (disabled by default)
+opt_in_rules:
+  - empty_count
+  - force_cast
+
+line_length:
+  warning: 120
+  error: 200
+
+
