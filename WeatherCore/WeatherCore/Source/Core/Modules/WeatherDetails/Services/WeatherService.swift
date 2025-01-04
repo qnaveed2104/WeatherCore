@@ -29,11 +29,15 @@ struct WeatherService: WeatherServiceProtocol {
             throw AppError.invalidWeatherData
         }
         
+        let formatedCityName = String(
+            format: AppConstants.DisplayFormats.formatedCityName,
+            weatherResponse.cityName ?? "NA"
+        )
         let formatedTemp = String(format: AppConstants.DisplayFormats.temperature, weatherResponse.temp)
         let formatedTime = formatUnixTimestamp(weatherResponse.ts)
 
         return WeatherDisplayData(
-            cityName: weatherResponse.cityName ?? "NA",
+            cityName: formatedCityName,
             formatedTemp: formatedTemp,
             fomattedTime: formatedTime,
             skyCondition: weatherResponse.weather.description
