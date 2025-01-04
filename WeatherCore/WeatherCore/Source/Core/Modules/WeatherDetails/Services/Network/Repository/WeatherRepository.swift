@@ -8,24 +8,28 @@
 import Foundation
 
 protocol WeatherRepositoryProtocol {
-    var apiCleint: APIClientProtocol { get }
+    var apiClient: APIClientProtocol { get }
+    var requestBuilder: WeatherRequestBuilderProtocol { get }
     func fetchCurrentWeather() async
 }
 
 struct WeatherRepository: WeatherRepositoryProtocol {
-    let apiCleint: APIClientProtocol
-    
-    init(apiCleint: APIClientProtocol = APIClient()) {
-        self.apiCleint = apiCleint
+    var requestBuilder: WeatherRequestBuilderProtocol
+    let apiClient: APIClientProtocol
+    init(apiClient: APIClientProtocol = APIClient(), builder: WeatherRequestBuilderProtocol = WeatherRequestBuilder()) {
+        self.apiClient = apiClient
+        self.requestBuilder = builder
     }
     func fetchCurrentWeather() async {
      
-      _ = await apiCleint.getDataFromServer(
-            urlRequest: URLRequest(
-                url: URL(
-                    string: "https://google.com")!
-            ),
-            responseType: WeatherData.self)
+        do {
+            let urlCurrentWeather = try requestBuilder.buildCurrentWeatherURLRequest()
+        
+            _ = await apiClient.getDataFromServer(
+                  urlRequest: urlCurrentWeather,
+                  responseType: WeatherData.self)
+        } catch {
+        }
     }
 }
 
