@@ -23,7 +23,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
     
     private func fetchWeatherData() async {
         do {
-            let weatherDisplayData = try await service.loadCurrentWeather()
+            let weatherDisplayData = try await service.loadWeatherForecast()
             print(weatherDisplayData)
         } catch {
             print(error)

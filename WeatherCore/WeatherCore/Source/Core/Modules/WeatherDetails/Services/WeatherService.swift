@@ -10,6 +10,8 @@ import Foundation
 protocol WeatherServiceProtocol {
     var repository: WeatherRepositoryProtocol { get }
     func loadCurrentWeather() async throws -> WeatherDisplayData
+    func loadWeatherForecast() async throws -> [WeatherDisplayData]
+
 }
 
 struct WeatherService: WeatherServiceProtocol {
@@ -17,11 +19,25 @@ struct WeatherService: WeatherServiceProtocol {
     let repository: WeatherRepositoryProtocol
         
     func loadCurrentWeather() async throws -> WeatherDisplayData {
-        let weatherResponse = try await repository.fetchCurrentWeather()
+        let weatherDataArray = try await fetchWeatherData {
+            try await repository.fetchCurrentWeather()
+        }
+        return try getWeatherDisplayDate(weatherResponse: weatherDataArray.first)
+    }
+    
+    func loadWeatherForecast() async throws -> [WeatherDisplayData] {
+        let weatherDataArray = try await fetchWeatherData {
+            try await repository.fetchWeatherForcast()
+        }
+        return try [getWeatherDisplayDate(weatherResponse: weatherDataArray.first)]
+    }
+    
+    private func fetchWeatherData(fetchOperation: () async throws -> WeatherResponse) async throws -> [WeatherData] {
+        let weatherResponse = try await fetchOperation()
         guard let weatherDataArray = weatherResponse.data, !weatherDataArray.isEmpty else {
             throw AppError.noWeatherDataAvailable
         }
-        return try getWeatherDisplayDate(weatherResponse: weatherDataArray.first)
+        return weatherDataArray
     }
     
     private func getWeatherDisplayDate(weatherResponse: WeatherData?) throws -> WeatherDisplayData {

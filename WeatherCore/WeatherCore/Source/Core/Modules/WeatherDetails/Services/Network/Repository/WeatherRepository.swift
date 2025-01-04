@@ -11,6 +11,7 @@ protocol WeatherRepositoryProtocol {
     var apiClient: APIClientProtocol { get }
     var requestBuilder: WeatherRequestBuilderProtocol { get }
     func fetchCurrentWeather() async throws -> WeatherResponse
+    func fetchWeatherForcast() async throws -> WeatherResponse
 }
 
 struct WeatherRepository: WeatherRepositoryProtocol {
@@ -22,23 +23,26 @@ struct WeatherRepository: WeatherRepositoryProtocol {
     }
     
     func fetchCurrentWeather() async throws -> WeatherResponse {
-        do {
-            let urlCurrentWeather = try requestBuilder.buildCurrentWeatherURLRequest()
+        let urlRequestforCurrentWeather = try requestBuilder.buildCurrentWeatherURLRequest()
+        return try await fetchWeather(urlRequest: urlRequestforCurrentWeather)
+    }
+    
+    func fetchWeatherForcast() async throws -> WeatherResponse {
+        let urlRequestforWeatherForecast = try requestBuilder.buildweatherForecastURLRequest()
+        return try await fetchWeather(urlRequest: urlRequestforWeatherForecast)
+    }
+
+    private func fetchWeather(urlRequest: URLRequest) async throws -> WeatherResponse {
         
-            let result = await apiClient.getDataFromServer(
-                  urlRequest: urlCurrentWeather,
-                  responseType: WeatherResponse.self)
-            
-            switch result {
-                
-            case .success(let weatherResponse):
-                return weatherResponse
-                
-            case .failure(let error):
-                throw error
-            }
-            
-        } catch {
+        let result = await apiClient.getDataFromServer(
+            urlRequest: urlRequest,
+            responseType: WeatherResponse.self
+        )
+        
+        switch result {
+        case .success(let weatherResponse):
+            return weatherResponse
+        case .failure(let error):
             throw error
         }
     }
