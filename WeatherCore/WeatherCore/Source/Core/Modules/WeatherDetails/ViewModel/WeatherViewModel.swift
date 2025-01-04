@@ -14,7 +14,7 @@ protocol WeatherViewModelProtocol: ObservableObject {
 class WeatherViewModel: WeatherViewModelProtocol {
     let service: WeatherServiceProtocol
     
-    init(service: WeatherServiceProtocol = WeatherService()) {
+    init(service: WeatherServiceProtocol) {
         self.service = service
     }
 }

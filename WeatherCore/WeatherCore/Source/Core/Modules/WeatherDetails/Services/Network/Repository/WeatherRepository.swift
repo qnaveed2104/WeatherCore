@@ -16,7 +16,7 @@ protocol WeatherRepositoryProtocol {
 struct WeatherRepository: WeatherRepositoryProtocol {
     var requestBuilder: WeatherRequestBuilderProtocol
     let apiClient: APIClientProtocol
-    init(apiClient: APIClientProtocol = APIClient(), builder: WeatherRequestBuilderProtocol = WeatherRequestBuilder()) {
+    init(apiClient: APIClientProtocol = APIClient(), builder: WeatherRequestBuilderProtocol) {
         self.apiClient = apiClient
         self.requestBuilder = builder
     }

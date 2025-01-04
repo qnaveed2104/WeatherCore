@@ -13,11 +13,7 @@ protocol WeatherServiceProtocol {
 struct WeatherService: WeatherServiceProtocol {
    
     let repository: WeatherRepositoryProtocol
-    
-    init(repository: WeatherRepositoryProtocol = WeatherRepository()) {
-        self.repository = repository
-    }
-    
+        
     func loadWeather() async {
         await repository.fetchCurrentWeather()
     }
