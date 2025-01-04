@@ -31,5 +31,10 @@ enum AppConstants {
     
     struct DisplayFormats {
         static let temperature = "%.0f°C"
+        static let lcoalTime: String = "AT %@ LOCAL TIME"
+    }
+    
+    struct DateFormats {
+        static let TimeFormat: String = "HH:mm"
     }
 }

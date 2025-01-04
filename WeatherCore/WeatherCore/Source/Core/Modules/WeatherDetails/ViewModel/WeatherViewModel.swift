@@ -22,10 +22,9 @@ class WeatherViewModel: WeatherViewModelProtocol {
     }
     
     private func fetchWeatherData() async {
-        
         do {
             let weatherDisplayData = try await service.loadCurrentWeather()
-            print(weatherDisplayData.cityName)
+            print(weatherDisplayData)
         } catch {
             print(error)
         }
