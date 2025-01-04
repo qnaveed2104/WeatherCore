@@ -11,60 +11,56 @@ protocol WeatherServiceProtocol {
     var repository: WeatherRepositoryProtocol { get }
     func loadCurrentWeather() async throws -> WeatherDisplayData
     func loadWeatherForecast() async throws -> [WeatherDisplayData]
-
+    
 }
 
 struct WeatherService: WeatherServiceProtocol {
-   
+    
     let repository: WeatherRepositoryProtocol
-        
     func loadCurrentWeather() async throws -> WeatherDisplayData {
-        let weatherDataArray = try await fetchWeatherData {
-            try await repository.fetchCurrentWeather()
+        let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchCurrentWeather)
+        guard let weatherData = weatherDataArray.first else {
+            throw AppError.invalidResponse
         }
-        return try getWeatherDisplayDate(weatherResponse: weatherDataArray.first)
+        return createWeatherDisplayData(from: weatherData, isCurrentWeather: true)
     }
     
     func loadWeatherForecast() async throws -> [WeatherDisplayData] {
-        let weatherDataArray = try await fetchWeatherData {
-            try await repository.fetchWeatherForcast()
+        let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchWeatherForcast)
+        return weatherDataArray.map {
+            createWeatherDisplayData(from: $0, isCurrentWeather: false)
         }
-        return try [getWeatherDisplayDate(weatherResponse: weatherDataArray.first)]
     }
     
-    private func fetchWeatherData(fetchOperation: () async throws -> WeatherResponse) async throws -> [WeatherData] {
+    private func fetchWeatherData(
+        fetchOperation: () async throws -> WeatherResponse
+    ) async throws -> [WeatherData] {
         let weatherResponse = try await fetchOperation()
-        guard let weatherDataArray = weatherResponse.data, !weatherDataArray.isEmpty else {
-            throw AppError.noWeatherDataAvailable
+        guard let data = weatherResponse.data, !data.isEmpty else {
+            throw AppError.invalidResponse
         }
-        return weatherDataArray
+        return data
     }
     
-    private func getWeatherDisplayDate(weatherResponse: WeatherData?) throws -> WeatherDisplayData {
-        guard let weatherResponse = weatherResponse else {
-            throw AppError.invalidWeatherData
-        }
-        
-        let formatedCityName = String(
-            format: AppConstants.DisplayFormats.formatedCityName,
-            weatherResponse.cityName ?? "NA"
-        )
-        let formatedTemp = String(format: AppConstants.DisplayFormats.temperature, weatherResponse.temp)
-        let formatedTime = formatUnixTimestamp(weatherResponse.ts)
-
-        return WeatherDisplayData(
-            cityName: formatedCityName,
-            formatedTemp: formatedTemp,
-            fomattedTime: formatedTime,
-            skyCondition: weatherResponse.weather.description
+    private func createWeatherDisplayData(from data: WeatherData, isCurrentWeather: Bool) -> WeatherDisplayData {
+        WeatherDisplayData(
+            cityName: isCurrentWeather
+            ? String(format: AppConstants.DisplayFormats.formatedCityName, data.cityName ?? "NA")
+            : (nil),
+            formatedTemp: String(format: AppConstants.DisplayFormats.temperature, data.temp),
+            fomattedTime: (isCurrentWeather
+                           ? formatUnixTimestamp(data.ts)
+                           : data.timestampLocal?.getlocalTime()
+                          ) ?? "NA",
+            skyCondition: data.weather.description
         )
     }
     
     private func formatUnixTimestamp(_ timestamp: Int?) -> String {
-            guard let timestamp = timestamp else {
-                return "NA"
-            }
-            let time = Date.timeFromUnixTimestamp(timestamp: TimeInterval(timestamp))
-            return String(format: AppConstants.DisplayFormats.lcoalTime, time)
+        guard let timestamp = timestamp else {
+            return "NA"
         }
+        let time = Date.timeFromUnixTimestamp(timestamp: TimeInterval(timestamp))
+        return String(format: AppConstants.DisplayFormats.lcoalTime, time)
+    }
 }
