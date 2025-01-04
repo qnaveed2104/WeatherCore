@@ -7,6 +7,14 @@
 
 import Foundation
 
-class WeatherViewModel: ObservableObject {
-   
+protocol WeatherViewModelProtocol: ObservableObject {
+    var service: WeatherServiceProtocol { get }
+}
+
+class WeatherViewModel: WeatherViewModelProtocol {
+    let service: WeatherServiceProtocol
+    
+    init(service: WeatherServiceProtocol = WeatherService()) {
+        self.service = service
+    }
 }

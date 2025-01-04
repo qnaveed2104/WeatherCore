@@ -28,6 +28,9 @@ public final class WeatherSDK {
     }
     
     private func createWeatherViewModel(city: String) -> WeatherViewModel {
-        return WeatherViewModel()
+        let apiClient: APIClientProtocol = APIClient()
+        let weatherRepository: WeatherRepositoryProtocol = WeatherRepository(apiCleint: apiClient)
+        let weatherservice: WeatherServiceProtocol = WeatherService(repository: weatherRepository)
+        return WeatherViewModel(service: weatherservice)
     }
 }
