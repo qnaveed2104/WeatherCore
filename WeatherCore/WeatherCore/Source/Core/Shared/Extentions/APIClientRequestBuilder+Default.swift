@@ -18,7 +18,7 @@ protocol APIClientRequestBuilderProtocol {
 extension APIClientRequestBuilderProtocol {
  
     var baseUrl: String {
-        API.baseUrl
+        AppConstants.API.baseUrl
     }
    
     func buildURLRequest(
@@ -27,7 +27,7 @@ extension APIClientRequestBuilderProtocol {
     ) throws -> URLRequest {
         
         guard var components = URLComponents(string: baseUrl) else {
-            throw AppError.invalidBaseUrl(description: AppResources.Constants.invalidBaseUrlMessage)
+            throw AppError.invalidBaseUrl(description: AppConstants.ErrorMessages.invalidBaseUrlMessage)
         }
         
         components.path = path
@@ -42,7 +42,7 @@ extension APIClientRequestBuilderProtocol {
         }
         
         guard let url = components.url else {
-            throw AppError.invalidUrl(description: AppResources.Constants.invalidURL)
+            throw AppError.invalidUrl(description: AppConstants.ErrorMessages.invalidURL)
         }
         
         return URLRequest(url: url)
