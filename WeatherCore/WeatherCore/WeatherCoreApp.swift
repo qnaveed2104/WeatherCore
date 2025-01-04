@@ -11,7 +11,9 @@ import SwiftUI
 struct WeatherCoreApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let weatherSdk: WeatherSDK = WeatherSDK(apiKey: "app_key")
+            let viewModel: MainViewModel = MainViewModel(weatherSdk: weatherSdk)
+            ClientAppContentView(viewModel: viewModel)
         }
     }
 }

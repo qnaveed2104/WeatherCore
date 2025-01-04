@@ -7,18 +7,19 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ClientAppContentView: View {
+    @ObservedObject var viewModel: MainViewModel
+
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
             Text("Hello, world!")
+            viewModel.getWeatherSDKView()
+            
         }
         .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    ClientAppContentView(viewModel: MainViewModel())
 }
