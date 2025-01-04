@@ -19,7 +19,11 @@ public final class WeatherSDK {
         self.apiKey = apiKey
     }
     
+    /// Returns the  view with the city weather details
+    /// - Parameter city: name of city whch details to be feteched
+    /// - Returns: View that show the details of the weather
     func getWeather(city: String) -> AnyView? {
-        return nil
+        let viewModel: WeatherViewModel = WeatherViewModel()
+        return AnyView(WeatherView(viewModel: viewModel))
     }
 }
