@@ -10,6 +10,7 @@ protocol WeatherRequestBuilderProtocol: APIClientRequestBuilderProtocol {
     
     var configurations: Configurations { get }
     func buildCurrentWeatherURLRequest() throws -> URLRequest
+    func buildweatherForecastURLRequest() throws -> URLRequest
 }
 
 struct WeatherRequestBuilder: WeatherRequestBuilderProtocol {
@@ -26,4 +27,15 @@ struct WeatherRequestBuilder: WeatherRequestBuilderProtocol {
         )
     }
     
+    func buildweatherForecastURLRequest() throws -> URLRequest {
+        return try buildURLRequest(
+            path: AppConstants.API.urlFromEndpoint(endpoint: AppConstants.API.weatherForcastEndpoint),
+            queryParams: [
+                AppConstants.API.apiKey: configurations.apiKey,
+                AppConstants.API.cityKey: configurations.cityName,
+                AppConstants.API.langKey: configurations.language ?? "en",
+                AppConstants.API.hoursKey: String(configurations.hours)
+            ]
+        )
+    }
 }

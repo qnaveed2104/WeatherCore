@@ -14,9 +14,11 @@ enum AppConstants {
         static let versionTwo: String = "/v2.0"
         
         static let currentWeatherEndpoint: String = "/current"
+        static let weatherForcastEndpoint: String = "/forecast/hourly"
         static let apiKey: String = "key"
         static let cityKey: String = "city"
         static let langKey: String = "lang"
+        static let hoursKey: String = "hours"
 
         static func urlFromEndpoint(endpoint: String, version: String = versionTwo) -> String {
             return "\(version)\(endpoint)"
@@ -32,6 +34,7 @@ enum AppConstants {
     struct DisplayFormats {
         static let temperature = "%.0f°C"
         static let lcoalTime: String = "AT %@ LOCAL TIME"
+        static let formatedCityName: String = "The Weather in %@ is:"
     }
     
     struct DateFormats {
