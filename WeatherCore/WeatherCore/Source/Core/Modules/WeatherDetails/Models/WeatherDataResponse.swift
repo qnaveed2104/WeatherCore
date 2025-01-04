@@ -7,5 +7,5 @@
 
 struct WeatherResponse: Codable {
     let count: Int
-    let data: [WeatherData]
+    let data: [WeatherData]?
 }
