@@ -17,7 +17,17 @@ class WeatherViewModel: WeatherViewModelProtocol {
     init(service: WeatherServiceProtocol) {
         self.service = service
         Task {
-            try await self.service.loadCurrentWeather()
+            await fetchWeatherData()
+        }
+    }
+    
+    private func fetchWeatherData() async {
+        
+        do {
+            let weatherDisplayData = try await service.loadCurrentWeather()
+            print(weatherDisplayData.cityName)
+        } catch {
+            print(error)
         }
     }
 }
