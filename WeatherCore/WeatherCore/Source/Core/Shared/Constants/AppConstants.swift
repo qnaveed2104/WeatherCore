@@ -14,7 +14,10 @@ enum AppConstants {
         static let versionTwo: String = "/v2.0"
         
         static let currentWeatherEndpoint: String = "/current"
-        
+        static let apiKey: String = "key"
+        static let cityKey: String = "city"
+        static let langKey: String = "lang"
+
         static func urlFromEndpoint(endpoint: String, version: String = versionTwo) -> String {
             return "\(version)\(endpoint)"
         }

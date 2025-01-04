@@ -18,7 +18,11 @@ struct WeatherRequestBuilder: WeatherRequestBuilderProtocol {
     func buildCurrentWeatherURLRequest() throws -> URLRequest {
         return try buildURLRequest(
             path: AppConstants.API.urlFromEndpoint(endpoint: AppConstants.API.currentWeatherEndpoint),
-            queryParams: nil
+            queryParams: [
+                AppConstants.API.apiKey: configurations.apiKey,
+                AppConstants.API.cityKey: configurations.cityName,
+                AppConstants.API.langKey: configurations.language ?? "en"
+            ]
         )
     }
     
