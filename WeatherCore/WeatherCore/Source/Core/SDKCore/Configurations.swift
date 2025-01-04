@@ -15,7 +15,6 @@
 /// let config = Configurations(apiKey: "your_api_key", cityName: "Berlin")
 /// ```
 ///
-// MARK: - Configuration
 public struct Configurations {
     let apiKey: String
     let cityName: String

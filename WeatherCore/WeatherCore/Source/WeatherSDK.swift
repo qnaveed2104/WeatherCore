@@ -14,11 +14,13 @@ import SwiftUI
 /// It uses the provided `apiKey` to authenticate API requests.
 public final class WeatherSDK {
     
-    private let apiKey: String
-    init (apiKey: String) {
-        self.apiKey = apiKey
+    // MARK: - Properties
+    public var configuration: Configurations
+
+    public init(configuration: Configurations) {
+        
+        self.configuration = configuration
     }
-    
     /// Returns the  view with the city weather details
     /// - Parameter city: name of city whch details to be feteched
     /// - Returns: View that show the details of the weather
@@ -29,7 +31,7 @@ public final class WeatherSDK {
     
     private func createWeatherViewModel(city: String) -> WeatherViewModel {
         let apiClient: APIClientProtocol = APIClient()
-        let requestBuilder: WeatherRequestBuilderProtocol = WeatherRequestBuilder()
+        let requestBuilder: WeatherRequestBuilderProtocol = WeatherRequestBuilder(configurations: configuration)
         let weatherRepository: WeatherRepositoryProtocol = WeatherRepository(
             apiClient: apiClient,
             builder: requestBuilder
