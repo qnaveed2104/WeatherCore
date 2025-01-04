@@ -14,7 +14,3 @@ struct WeatherView: View {
         Text("Hello from WeatherView")
     }
 }
-
-#Preview {
-    WeatherView(viewModel: WeatherViewModel())
-}
