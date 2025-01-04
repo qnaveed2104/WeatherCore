@@ -10,7 +10,7 @@ import Foundation
 protocol WeatherRepositoryProtocol {
     var apiClient: APIClientProtocol { get }
     var requestBuilder: WeatherRequestBuilderProtocol { get }
-    func fetchCurrentWeather() async
+    func fetchCurrentWeather() async throws -> WeatherResponse
 }
 
 struct WeatherRepository: WeatherRepositoryProtocol {
@@ -20,19 +20,26 @@ struct WeatherRepository: WeatherRepositoryProtocol {
         self.apiClient = apiClient
         self.requestBuilder = builder
     }
-    func fetchCurrentWeather() async {
-     
+    
+    func fetchCurrentWeather() async throws -> WeatherResponse {
         do {
             let urlCurrentWeather = try requestBuilder.buildCurrentWeatherURLRequest()
         
-            _ = await apiClient.getDataFromServer(
+            let result = await apiClient.getDataFromServer(
                   urlRequest: urlCurrentWeather,
-                  responseType: WeatherData.self)
+                  responseType: WeatherResponse.self)
+            
+            switch result {
+                
+            case .success(let weatherResponse):
+                return weatherResponse
+                
+            case .failure(let error):
+                throw error
+            }
+            
         } catch {
+            throw error
         }
     }
-}
-
-struct WeatherData: Codable {
-    let city: String
 }

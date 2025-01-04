@@ -16,5 +16,8 @@ class WeatherViewModel: WeatherViewModelProtocol {
     
     init(service: WeatherServiceProtocol) {
         self.service = service
+        Task {
+            try await self.service.loadWeather()
+        }
     }
 }

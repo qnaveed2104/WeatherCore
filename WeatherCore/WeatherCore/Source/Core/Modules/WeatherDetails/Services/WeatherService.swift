@@ -7,14 +7,14 @@
 
 protocol WeatherServiceProtocol {
     var repository: WeatherRepositoryProtocol { get }
-    func loadWeather() async
+    func loadWeather() async throws
 }
 
 struct WeatherService: WeatherServiceProtocol {
    
     let repository: WeatherRepositoryProtocol
         
-    func loadWeather() async {
-        await repository.fetchCurrentWeather()
+    func loadWeather() async throws {
+        _ = try await repository.fetchCurrentWeather()
     }
 }
