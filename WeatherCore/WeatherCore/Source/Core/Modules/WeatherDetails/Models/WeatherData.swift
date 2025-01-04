@@ -6,6 +6,7 @@
 //
 
 struct WeatherData: Codable {
+    let timestampLocal:String?
     let appTemp: Double?
     let aqi: Int?
     let cityName: String?

@@ -6,6 +6,9 @@
 //
 
 struct WeatherResponse: Codable {
-    let count: Int
+    let count: Int?
     let data: [WeatherData]?
+    let cityName: String?
+    let countryCode: String?
+
 }
