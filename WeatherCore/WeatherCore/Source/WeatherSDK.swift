@@ -16,9 +16,11 @@ public final class WeatherSDK {
     
     // MARK: - Properties
     public var configuration: Configurations
+    public weak var delegate: WeatherSDKDelegate?
 
-    public init(configuration: Configurations) {
+    public init(configuration: Configurations, delegate: WeatherSDKDelegate) {
         self.configuration = configuration
+        self.delegate = delegate
     }
     /// Returns the  view with the city weather details
     /// - Parameter city: name of city whch details to be feteched
@@ -35,11 +37,24 @@ public final class WeatherSDK {
             apiClient: apiClient,
             builder: requestBuilder
         )
-        let weatherservice: WeatherServiceProtocol = WeatherService(repository: weatherRepository)
+        let weatherservice: WeatherServiceProtocol = WeatherService(
+            weatherSDKDelegate: self,
+            repository: weatherRepository
+        )
         let viewModel: WeatherViewModel =  WeatherViewModel(service: weatherservice)
         Task {
             await viewModel.fetchWeatherData()
         }
         return viewModel
+    }
+}
+
+extension WeatherSDK: WeatherSDKDelegate {
+    public func onFinished() {
+        delegate?.onFinished()
+    }
+    
+    public func onFinishedWithError(_ error: any Error) {
+        delegate?.onFinishedWithError(error)
     }
 }

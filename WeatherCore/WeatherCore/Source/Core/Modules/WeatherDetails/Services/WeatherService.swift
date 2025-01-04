@@ -9,14 +9,16 @@ import Foundation
 
 protocol WeatherServiceProtocol {
     var repository: WeatherRepositoryProtocol { get }
+    var weatherSDKDelegate: WeatherSDKDelegate { get }
     func loadCurrentWeather() async throws -> WeatherDisplayData
     func loadWeatherForecast() async throws -> [WeatherDisplayData]
     
 }
 
 struct WeatherService: WeatherServiceProtocol {
-    
+    let weatherSDKDelegate: WeatherSDKDelegate
     let repository: WeatherRepositoryProtocol
+    
     func loadCurrentWeather() async throws -> WeatherDisplayData {
         let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchCurrentWeather)
         guard let weatherData = weatherDataArray.first else {
