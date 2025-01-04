@@ -14,4 +14,7 @@ public enum AppError: Error {
     case httpError(statusCode: Int)
     case emptyData
     case githubTokenNotfound
+    case noWeatherDataAvailable
+    case invalidWeatherData
+    case missingCriticalField(String)
 }
