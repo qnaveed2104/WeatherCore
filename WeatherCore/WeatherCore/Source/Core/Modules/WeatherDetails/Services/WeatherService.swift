@@ -5,6 +5,8 @@
 //  Created by Qazi on 04/01/2025.
 //
 
+import Foundation
+
 protocol WeatherServiceProtocol {
     var repository: WeatherRepositoryProtocol { get }
     func loadCurrentWeather() async throws -> WeatherDisplayData
@@ -26,6 +28,10 @@ struct WeatherService: WeatherServiceProtocol {
         guard let weatherResponse = weatherResponse else {
             throw AppError.invalidWeatherData
         }
-        return WeatherDisplayData(cityName: weatherResponse.cityName ?? "NA")
+        
+        let temp = String(format: AppConstants.DisplayFormats.temperature, weatherResponse.temp)
+        let time = Date.timeFromUnixTimestamp(timestamp: TimeInterval(weatherResponse.ts ?? 0))
+
+        return WeatherDisplayData(cityName: weatherResponse.cityName ?? "NA", formatedTemp: temp, fomattedTime: time)
     }
 }

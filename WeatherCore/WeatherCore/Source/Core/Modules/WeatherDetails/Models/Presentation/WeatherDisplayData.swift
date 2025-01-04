@@ -7,4 +7,7 @@
 
 struct WeatherDisplayData {
     let cityName: String
+    let formatedTemp: String
+    let fomattedTime: String
+    
 }

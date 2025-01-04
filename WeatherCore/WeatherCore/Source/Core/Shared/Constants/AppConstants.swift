@@ -24,8 +24,12 @@ enum AppConstants {
     }
     
     // MARK: - Error Messages
-       struct ErrorMessages {
-           static let invalidBaseUrlMessage: String = "Base URL is not valid"
-           static let invalidURL: String = "Invalid URL"
-       }
+    struct ErrorMessages {
+        static let invalidBaseUrlMessage: String = "Base URL is not valid"
+        static let invalidURL: String = "Invalid URL"
+    }
+    
+    struct DisplayFormats {
+        static let temperature = "%.0f°C"
+    }
 }
