@@ -12,10 +12,12 @@ protocol WeatherServiceProtocol {
     var weatherSDKDelegate: WeatherSDKDelegate { get }
     func loadCurrentWeather() async throws -> WeatherDisplayData
     func loadWeatherForecast() async throws -> [WeatherDisplayData]
-    
+    func dismissWeatherSDK()
+    func dissmissWeatherSDKWithError(eror: Error)
 }
 
 struct WeatherService: WeatherServiceProtocol {
+   
     let weatherSDKDelegate: WeatherSDKDelegate
     let repository: WeatherRepositoryProtocol
     
@@ -33,6 +35,15 @@ struct WeatherService: WeatherServiceProtocol {
             createWeatherDisplayData(from: $0, isCurrentWeather: false)
         }
     }
+    
+    func dismissWeatherSDK() {
+        weatherSDKDelegate.onFinished()
+    }
+    
+    func dissmissWeatherSDKWithError(eror: any Error) {
+        
+    }
+    
     
     private func fetchWeatherData(
         fetchOperation: () async throws -> WeatherResponse

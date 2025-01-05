@@ -12,5 +12,9 @@ struct WeatherView: View {
 
     var body: some View {
         Text("Hello from WeatherView")
+        Button("Back") {
+            viewModel.dismissSDK()
+        }
+
     }
 }

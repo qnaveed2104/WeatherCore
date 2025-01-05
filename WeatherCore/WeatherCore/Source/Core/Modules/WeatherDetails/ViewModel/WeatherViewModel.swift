@@ -10,6 +10,7 @@ import Foundation
 protocol WeatherViewModelProtocol: ObservableObject {
     var service: WeatherServiceProtocol { get }
     func fetchWeatherData() async
+    func dismissSDK()
 }
 
 class WeatherViewModel: WeatherViewModelProtocol {
@@ -23,11 +24,14 @@ class WeatherViewModel: WeatherViewModelProtocol {
         do {
             async let currentWeather = service.loadCurrentWeather()
             async let weatherForecast = service.loadWeatherForecast()
-            let (currentWeatherData, weatherForecastDate) = try await (currentWeather, weatherForecast)
+            let (_, _) = try await (currentWeather, weatherForecast)
             
-            print("sdffsdf")
         } catch {
             print(error)
         }
+    }
+    
+    func dismissSDK() {
+        service.dismissWeatherSDK()
     }
 }
