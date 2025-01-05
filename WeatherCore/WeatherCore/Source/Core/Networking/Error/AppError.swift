@@ -17,4 +17,6 @@ public enum AppError: Error {
     case noWeatherDataAvailable
     case invalidWeatherData
     case missingCriticalField(String)
+    case invalidAPIKey
+    case invalidCityName
 }

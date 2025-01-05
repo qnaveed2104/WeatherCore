@@ -18,7 +18,9 @@ public final class WeatherSDK {
     public var configuration: Configurations
     public weak var delegate: WeatherSDKDelegate?
 
-    public init(configuration: Configurations, delegate: WeatherSDKDelegate) {
+    public init(configuration: Configurations, delegate: WeatherSDKDelegate) throws {
+        guard !configuration.apiKey.isEmpty else { throw AppError.invalidAPIKey }
+        guard !configuration.cityName.isEmpty else { throw AppError.invalidCityName }
         self.configuration = configuration
         self.delegate = delegate
     }
