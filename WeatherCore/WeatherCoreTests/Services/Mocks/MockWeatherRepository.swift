@@ -13,8 +13,8 @@ import Testing
 struct MockWeatherRepository: WeatherRepositoryProtocol {
     let apiClient: WeatherCore.APIClientProtocol
     let requestBuilder: WeatherCore.WeatherRequestBuilderProtocol
-    let currentWeatherResponse: WeatherResponse?
-    let forecastResponse: WeatherResponse?
+    let currentWeatherResponse: WeatherResponse? = nil
+    let forecastResponse: WeatherResponse? = nil
     
     func fetchCurrentWeather() async throws -> WeatherCore.WeatherResponse {
         if let response = currentWeatherResponse {
