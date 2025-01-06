@@ -38,23 +38,25 @@ struct APIClient: APIClientProtocol {
             
             let statusCode = httpResponse.statusCode
             
-            if (200...402).contains(statusCode) {
-                
-                if data.isEmpty {
+            if !(200...299).contains(statusCode) {
+                if let errorMessage = try? decoder.decodeAPIError(data: data) {
+                    return .failure(AppError.apiError(message: errorMessage))
+                } else {
+                    // Fallback to a generic HTTP error message
                     return .failure(.httpError(statusCode: statusCode))
                 }
-                
-                do {
-                    
-                    let model = try decoder.decodeObject(objectType: T.self, data: data)
-                    return .success(model)
-                } catch {
-                    return .failure(AppError.decodingError(error: error))
-                }
-            } else {
+            }
+            
+            if data.isEmpty {
                 return .failure(.httpError(statusCode: statusCode))
             }
             
+            do {
+                let model = try decoder.decodeObject(objectType: T.self, data: data)
+                return .success(model)
+            } catch {
+                return .failure(AppError.decodingError(error: error))
+            }
         } catch {
             return .failure(AppError.networkError(error: error))
         }

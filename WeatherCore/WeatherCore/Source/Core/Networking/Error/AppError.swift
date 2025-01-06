@@ -28,7 +28,6 @@ public enum AppError: Error, Equatable {
                 return lhsField == rhsField
             case (.networkError(let lhsError), .networkError(let rhsError)):
                 return lhsError.localizedDescription == rhsError.localizedDescription
-
             default:
                 return false
             }
@@ -47,5 +46,5 @@ public enum AppError: Error, Equatable {
     case invalidAPIKey
     case invalidCityName
     case networkError(error: Error)
-
+    case apiError(message: String)
 }
