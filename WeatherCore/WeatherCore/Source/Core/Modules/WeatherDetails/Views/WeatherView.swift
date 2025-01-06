@@ -14,7 +14,10 @@ struct WeatherView: View {
         AppStateView(
             state: viewModel.state,
             content: { weatherDetails in
-                CurrentWeatherView(currentWeather: weatherDetails.currentWeather)
+                VStack {
+                    CurrentWeatherView(currentWeather: weatherDetails.currentWeather)
+                    ForecastListView(weatherForecast: weatherDetails.weatherForecast)
+                }
             }
         )
 

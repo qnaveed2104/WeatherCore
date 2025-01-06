@@ -26,8 +26,7 @@ struct CurrentWeatherView: View {
                 }
                 .padding()
             } else {
-                // Loader
-                ProgressView("Loading current weather...")
+                DefaultLoadingView(loadingText: "Loading current weather...")
                     .padding()
             }
         }

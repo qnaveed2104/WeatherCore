@@ -8,11 +8,31 @@
 import SwiftUI
 
 struct ForecastListView: View {
+    let weatherForecast: [WeatherDisplayData]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+            if weatherForecast.isEmpty {
+                // Show a loader when the forecast is empty
+                ProgressView("Loading forecast...")
+                    .padding()
+            } else {
+                // Display a list of forecasts
+                List(weatherForecast, id: \.fomattedTime) { forecast in
+                    // Replace with your actual layout for forecast items
+                    WeatherRow(forecast: forecast)
+                }
+                .listStyle(PlainListStyle())
+
+            }
+        }
+    
 }
 
 #Preview {
-    ForecastListView()
+    ForecastListView(weatherForecast: [WeatherDisplayData(
+        cityName: "Berlin",
+        formatedTemp: "20°",
+        fomattedTime: "AT LOCAL TIME 16:00)",
+        skyCondition: "Clear")])
 }
+
