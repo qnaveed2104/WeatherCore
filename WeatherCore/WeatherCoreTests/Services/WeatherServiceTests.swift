@@ -29,13 +29,23 @@ final class WeatherServiceTests {
     func testLoadCurrentWeather() async {
         repository.currentWeatherResponse = MockWeatherData.getData()
         service = WeatherService(weatherSDKDelegate: delegate, repository: repository)
-
+        
         let result = try? await service?.loadCurrentWeather()
-
+        
         #expect(result?.cityName == "The Weather in Berlin is:")
         #expect(result?.fomattedTime == "AT 18:00 LOCAL TIME")
         #expect(result?.formatedTemp == "23°C")
         #expect(result?.skyCondition == "Clouds")
+    }
+    
+    @Test
+    func testLoadCurrentWeather_InvalidResponse() async {
+        service = WeatherService(weatherSDKDelegate: delegate, repository: repository)        
+        await #expect(performing: {
+            try await service?.loadCurrentWeather()
+        }, throws: { error in
+            error as? AppError == .invalidResponse
+        })
     }
     
     deinit {
