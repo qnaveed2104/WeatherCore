@@ -26,6 +26,9 @@ public enum AppError: Error, Equatable {
                 return lhsStatusCode == rhsStatusCode
             case (.missingCriticalField(let lhsField), .missingCriticalField(let rhsField)):
                 return lhsField == rhsField
+            case (.networkError(let lhsError), .networkError(let rhsError)):
+                return lhsError.localizedDescription == rhsError.localizedDescription
+
             default:
                 return false
             }
@@ -43,4 +46,6 @@ public enum AppError: Error, Equatable {
     case missingCriticalField(String)
     case invalidAPIKey
     case invalidCityName
+    case networkError(error: Error)
+
 }

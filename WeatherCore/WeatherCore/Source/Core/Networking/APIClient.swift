@@ -56,7 +56,7 @@ struct APIClient: APIClientProtocol {
             }
             
         } catch {
-            return .failure(AppError.unknownError)
+            return .failure(AppError.networkError(error: error))
         }
     }
 }
