@@ -22,17 +22,29 @@ struct WeatherService: WeatherServiceProtocol {
     let repository: WeatherRepositoryProtocol
     
     func loadCurrentWeather() async throws -> WeatherDisplayData {
-        let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchCurrentWeather)
-        guard let weatherData = weatherDataArray.first else {
-            throw AppError.invalidResponse
+        
+        do {
+            let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchCurrentWeather)
+            guard let weatherData = weatherDataArray.first else {
+                throw AppError.invalidResponse
+            }
+            return createWeatherDisplayData(from: weatherData, isCurrentWeather: true)
+        } catch {
+            dissmissWeatherSDKWithError(eror: error)
+            throw error
         }
-        return createWeatherDisplayData(from: weatherData, isCurrentWeather: true)
     }
     
     func loadWeatherForecast() async throws -> [WeatherDisplayData] {
-        let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchWeatherForcast)
-        return weatherDataArray.map {
-            createWeatherDisplayData(from: $0, isCurrentWeather: false)
+        
+        do {
+            let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchWeatherForcast)
+            return weatherDataArray.map {
+                createWeatherDisplayData(from: $0, isCurrentWeather: false)
+            }
+        } catch {
+            dissmissWeatherSDKWithError(eror: error)
+            throw error
         }
     }
     
@@ -41,9 +53,8 @@ struct WeatherService: WeatherServiceProtocol {
     }
     
     func dissmissWeatherSDKWithError(eror: any Error) {
-        
+        weatherSDKDelegate.onFinishedWithError(eror)
     }
-    
     
     private func fetchWeatherData(
         fetchOperation: () async throws -> WeatherResponse
