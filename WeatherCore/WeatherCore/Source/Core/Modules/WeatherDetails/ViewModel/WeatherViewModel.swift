@@ -11,12 +11,13 @@ protocol WeatherViewModelProtocol: ObservableObject {
     var service: WeatherServiceProtocol { get }
     var currentWeather: WeatherDisplayData? { get set}
     var weatherForecast: [WeatherDisplayData] { get set}
-
     func fetchWeatherData() async
     func dismissSDK()
 }
 
-class WeatherViewModel: WeatherViewModelProtocol {
+class WeatherViewModel: WeatherViewModelProtocol, AppStateProtocol {
+    typealias ContentType = WeatherDetails
+    var state: AppState<WeatherDetails>
     var currentWeather: WeatherDisplayData?
     var weatherForecast: [WeatherDisplayData] = []
     
@@ -24,6 +25,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
     
     init(service: WeatherServiceProtocol) {
         self.service = service
+        self.state = .idle
     }
     
     func fetchWeatherData() async {
@@ -31,14 +33,17 @@ class WeatherViewModel: WeatherViewModelProtocol {
             async let currentWeatherTask: WeatherDisplayData? = loadCurrentWeather()
             async let weatherForecastTask: [WeatherDisplayData] =  loadWeatherForecast()
             
-            if let weather = try await currentWeatherTask {
-                self.currentWeather = weather
+            let (currentWeather, weatherForecast) = try await (currentWeatherTask, weatherForecastTask)
+            let weatherDetails = WeatherDetails(currentWeather: currentWeather, weatherForecast: weatherForecast)
+            
+            if weatherDetails.isEmpty {
+                self.state = .empty
+            } else {
+                self.state = .success(weatherDetails)
             }
             
-            self.weatherForecast = try await weatherForecastTask
-            
         } catch {
-            print(error)
+            self.state = .failed(error as? AppError ?? AppError.unknownError)
         }
     }
     
