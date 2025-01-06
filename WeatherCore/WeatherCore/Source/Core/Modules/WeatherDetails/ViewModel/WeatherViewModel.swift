@@ -17,7 +17,7 @@ protocol WeatherViewModelProtocol: ObservableObject {
 
 class WeatherViewModel: WeatherViewModelProtocol, AppStateProtocol {
     typealias ContentType = WeatherDetails
-    var state: AppState<WeatherDetails>
+    @Published var state: AppState<WeatherDetails>
     var currentWeather: WeatherDisplayData?
     var weatherForecast: [WeatherDisplayData] = []
     
@@ -28,7 +28,9 @@ class WeatherViewModel: WeatherViewModelProtocol, AppStateProtocol {
         self.state = .idle
     }
     
+    @MainActor
     func fetchWeatherData() async {
+        self.state = .loading
         do {
             async let currentWeatherTask: WeatherDisplayData? = loadCurrentWeather()
             async let weatherForecastTask: [WeatherDisplayData] =  loadWeatherForecast()
@@ -41,7 +43,6 @@ class WeatherViewModel: WeatherViewModelProtocol, AppStateProtocol {
             } else {
                 self.state = .success(weatherDetails)
             }
-            
         } catch {
             self.state = .failed(error as? AppError ?? AppError.unknownError)
         }

@@ -9,12 +9,14 @@ import SwiftUI
 
 struct WeatherView: View {
     @ObservedObject var viewModel: WeatherViewModel
-
     var body: some View {
-        Text("Hello from WeatherView")
-        Button("Back") {
-            viewModel.dismissSDK()
-        }
+        
+        AppStateView(
+            state: viewModel.state,
+            content: { weatherDetails in
+                Text(weatherDetails.currentWeather?.cityName ?? "")
+            }
+        )
 
     }
 }
