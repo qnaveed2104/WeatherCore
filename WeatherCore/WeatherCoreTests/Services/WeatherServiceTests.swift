@@ -10,8 +10,8 @@ import Testing
 
 final class WeatherServiceTests {
     
-    var repository: MockWeatherRepository
-    var delegate: MockWeatherSDKDelegate
+    var repository: MockWeatherRepository?
+    var delegate: MockWeatherSDKDelegate?
     var service: WeatherService?
     
     init() async throws {
@@ -24,9 +24,13 @@ final class WeatherServiceTests {
         repository = MockWeatherRepository(apiClient: mockAPI, requestBuilder: mockRequestBuilder)
         delegate = MockWeatherSDKDelegate()
     }
-    
+        
     @Test
     func testLoadCurrentWeather() async {
+        guard var repository = repository, let delegate = delegate else {
+            #expect(repository != nil && delegate != nil, "Dependencies not initialized")
+            return
+        }
         repository.currentWeatherResponse = MockWeatherData.getDataForCurrentWeather()
         service = WeatherService(weatherSDKDelegate: delegate, repository: repository)
         
@@ -40,6 +44,11 @@ final class WeatherServiceTests {
     
     @Test
     func testLoadCurrentWeather_InvalidResponse() async {
+        guard let repository = repository, let delegate = delegate else {
+            #expect(repository != nil && delegate != nil, "Dependencies not initialized")
+            return
+        }
+
         service = WeatherService(weatherSDKDelegate: delegate, repository: repository)
         await #expect(performing: {
             try await service?.loadCurrentWeather()
@@ -50,16 +59,35 @@ final class WeatherServiceTests {
     
     @Test
     func testLoadWeatherForecast() async {
+        guard var repository = repository, let delegate = delegate else {
+            #expect(repository != nil && delegate != nil, "Dependencies not initialized")
+            return
+        }
+
         repository.forecastResponse = MockWeatherData.getDataForWeatherForecast()
         service = WeatherService(weatherSDKDelegate: delegate, repository: repository)
-
+        
         let result = try? await service?.loadWeatherForecast()
         #expect(result?.count == 2)
         #expect(result?[0].skyCondition == "Broken clouds")
         #expect(result?[1].skyCondition == "Overcast clouds")
     }
     
+    @Test
+    func testDismissWeatherSDK() {
+        guard let repository = repository, let delegate = delegate else {
+            #expect(repository != nil && delegate != nil, "Dependencies not initialized")
+            return
+        }
+
+        let service = WeatherService(weatherSDKDelegate: delegate, repository: repository)
+        service.dismissWeatherSDK()
+        #expect(delegate.onFinishedCalled == true)
+    }
+    
     deinit {
+        repository = nil
+        delegate = nil
         service = nil
     }
 }
