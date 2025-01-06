@@ -14,7 +14,7 @@ struct WeatherView: View {
         AppStateView(
             state: viewModel.state,
             content: { weatherDetails in
-                Text(weatherDetails.currentWeather?.cityName ?? "")
+                CurrentWeatherView(currentWeather: weatherDetails.currentWeather)
             }
         )
 
