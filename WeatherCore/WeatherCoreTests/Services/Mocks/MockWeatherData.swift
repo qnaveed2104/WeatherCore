@@ -9,15 +9,26 @@ import Foundation
 
 struct MockWeatherData {
 
-    static func getData() -> WeatherResponse {
+    static func getDataForCurrentWeather() -> WeatherResponse {
         return getWeatherResponse(
             code: nil,
-            data: [getWeatherData(weather: getWeather())],
+            data: [getWeatherData(skyCondition: "Cloud", weather: getWeather())],
             cityName: nil,
             countryCode: nil
         )
     }
     
+    static func getDataForWeatherForecast() -> WeatherResponse {
+        return getWeatherResponse(
+            code: nil,
+            data: [ getWeatherData(skyCondition: "Broken clouds", weather: getWeather()),
+                    getWeatherData(skyCondition: "Overcast clouds", weather: getWeather())
+                  ],
+            cityName: "Berlin",
+            countryCode: nil
+        )
+    }
+
     static func getWeatherResponse(
         code: Int? = 1,
         data: [WeatherData],
@@ -31,6 +42,7 @@ struct MockWeatherData {
         cityName: String = "Berlin",
         countryCode: String = "GB",
         timestamp: Int = 1503936000,
+        skyCondition: String,
         weather: Weather) -> WeatherData {
         WeatherData(
             timestampLocal: timestampLocal,
@@ -42,14 +54,14 @@ struct MockWeatherData {
             solarRad: nil, sources: nil, stateCode: nil, station: nil,
             sunrise: nil, sunset: nil, temp: 23.0, timezone: nil,
             ts: timestamp, uv: nil, vis: nil,
-            weather: getWeather(),
+            weather: getWeather(description: skyCondition),
             windCdir: "asd", windCdirFull: "adas", windDir: 12.4, windSpd: 123.0
         )
     }
     
     static func getWeather(
         code: Int = 2,
-        description: String = "Clouds",
+        description: String = "",
         icon: String = "") -> Weather {
         Weather(code: code, description: description, icon: icon)
     }
