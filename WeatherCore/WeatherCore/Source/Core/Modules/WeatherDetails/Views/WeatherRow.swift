@@ -13,10 +13,12 @@ struct WeatherRow: View {
         HStack {
             
             WeatherViewWithTheme(forecast.fomattedTime, style: .textRegular)
+                .padding(.leading, 5)
             WeatherViewWithTheme(forecast.formatedTemp, style: .title)
             WeatherViewWithTheme(forecast.skyCondition, style: .textRegular)
         }
         .padding(.vertical, 20)
+        
     }
 }
 

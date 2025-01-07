@@ -13,7 +13,7 @@ struct ForecastListView: View {
     var body: some View {
             if weatherForecast.isEmpty {
                 // Show a loader when the forecast is empty
-                ProgressView("Loading forecast...")
+                DefaultLoadingView(loadingText: "Loading forecast...")
                     .padding()
             } else {
                 // Display a list of forecasts
