@@ -12,48 +12,35 @@ protocol WeatherServiceProtocol {
     var weatherSDKDelegate: WeatherSDKDelegate { get }
     func loadCurrentWeather() async throws -> WeatherDisplayData
     func loadWeatherForecast() async throws -> [WeatherDisplayData]
-    func dismissWeatherSDK()
-    func dissmissWeatherSDKWithError(eror: Error)
+    func dismissWeatherSDK(error: Error?)
 }
 
 struct WeatherService: WeatherServiceProtocol {
-   
     let weatherSDKDelegate: WeatherSDKDelegate
     let repository: WeatherRepositoryProtocol
     
     func loadCurrentWeather() async throws -> WeatherDisplayData {
-        
-        do {
-            let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchCurrentWeather)
-            guard let weatherData = weatherDataArray.first else {
-                throw AppError.invalidResponse
-            }
-            return createWeatherDisplayData(from: weatherData, isCurrentWeather: true)
-        } catch {
-            dissmissWeatherSDKWithError(eror: error)
-            throw error
+        let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchCurrentWeather)
+        guard let weatherData = weatherDataArray.first else {
+            throw AppError.invalidResponse
         }
+        return createWeatherDisplayData(from: weatherData, isCurrentWeather: true)
     }
     
     func loadWeatherForecast() async throws -> [WeatherDisplayData] {
         
-        do {
-            let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchWeatherForcast)
-            return weatherDataArray.map {
-                createWeatherDisplayData(from: $0, isCurrentWeather: false)
-            }
-        } catch {
-            dissmissWeatherSDKWithError(eror: error)
-            throw error
+        let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchWeatherForcast)
+        return weatherDataArray.map {
+            createWeatherDisplayData(from: $0, isCurrentWeather: false)
         }
     }
     
-    func dismissWeatherSDK() {
-        weatherSDKDelegate.onFinished()
-    }
-    
-    func dissmissWeatherSDKWithError(eror: any Error) {
-        weatherSDKDelegate.onFinishedWithError(eror)
+    func dismissWeatherSDK(error: Error?) {
+        if let error = error {
+            weatherSDKDelegate.onFinishedWithError(error)
+        } else {
+            weatherSDKDelegate.onFinished()
+        }
     }
     
     private func fetchWeatherData(

@@ -57,6 +57,12 @@ class WeatherViewModel: WeatherViewModelProtocol, AppStateProtocol {
     }
     
     func dismissSDK() {
-        service.dismissWeatherSDK()
+        let extractedError: AppError? = {
+            if case let .failed(error) = state {
+                return error
+            }
+            return nil
+        }()
+        service.dismissWeatherSDK(error: extractedError)
     }
 }
