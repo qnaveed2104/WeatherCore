@@ -19,7 +19,7 @@ public struct Configurations {
     let apiKey: String
     let cityName: String
     let language: String?
-    let hours: Int
+    let hours: Int = 25
     
     /// Configuration from which WeatherSDK initiliaze
     /// - Parameters:
@@ -30,10 +30,9 @@ public struct Configurations {
     ///
     ///   - Returns: A new instance of `Configurations` with the provided parameters.
 
-    public init(apiKey: String, cityName: String, language: String = "en", hours: Int) {
+    public init(apiKey: String, cityName: String, language: String = "en") {
         self.apiKey = apiKey
         self.cityName = cityName
         self.language = language
-        self.hours = hours
     }
 }

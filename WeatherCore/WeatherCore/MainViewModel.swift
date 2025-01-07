@@ -15,7 +15,7 @@ class MainViewModel: ObservableObject {
     }
     
     func getWeather(apiKey: String, cityName: String) {
-        let configuration = Configurations(apiKey: apiKey, cityName: cityName, hours: 24)
+        let configuration = Configurations(apiKey: apiKey, cityName: cityName)
         weatherSdk =  try? WeatherSDK(configuration: configuration, delegate: self)
     }
     
@@ -34,7 +34,7 @@ extension MainViewModel: WeatherSDKDelegate {
     }
     
     func onFinishedWithError(_ error: Error) {
-        print("Weather dissmissed with error: \(error)")
+        print("Weather dissmissed with error: \(error.localizedDescription)")
     }
     
 }
