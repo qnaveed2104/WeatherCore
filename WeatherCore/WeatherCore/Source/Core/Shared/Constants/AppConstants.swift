@@ -38,7 +38,8 @@ enum AppConstants {
     }
     
     struct DisplayMessages {
-        static let header: String = "24 Hour Forecast"
+        static let header: String = "24Hour Forecast"
+        static let backButton: String = "Back"
     }
     
     struct DateFormats {
@@ -48,5 +49,9 @@ enum AppConstants {
     struct FontNames {
         static let bold: String = "Satoshi-Bold"
         static let medium: String = "Satoshi-Medium"
+    }
+    
+    struct SysImagesNames {
+        static let backImage = "chevron.left"
     }
 }

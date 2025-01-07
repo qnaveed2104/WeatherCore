@@ -10,7 +10,7 @@ import SwiftUI
 enum ThemeFonts {
     
     enum FontType {
-        case heading1, heading2, title, textRegular, label
+        case heading1, heading2, title, textRegular, label, customFont
     }
 
     static func h1() -> Font { Font.custom(AppConstants.FontNames.bold, size: 28) }
@@ -18,6 +18,7 @@ enum ThemeFonts {
     static func title() -> Font { Font.custom(AppConstants.FontNames.bold, size: 16) }
     static func textRegular() -> Font { Font.custom(AppConstants.FontNames.medium, size: 16) }
     static func label() -> Font { Font.custom(AppConstants.FontNames.medium, size: 12) }
+    static func customFont() -> Font { Font.custom(AppConstants.FontNames.medium, size: 12) }
     
     static func fontStyle(for type: FontType) -> (font: Font, lineSpacing: CGFloat) {
         switch type {
@@ -31,6 +32,9 @@ enum ThemeFonts {
             return (font: textRegular(), lineSpacing: 24)
         case .label:
             return (font: label(), lineSpacing: 18)
+        case .customFont:
+            return (font: label(), lineSpacing: 0)
+
         }
     }
 }
