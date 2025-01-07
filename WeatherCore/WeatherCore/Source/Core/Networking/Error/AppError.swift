@@ -47,4 +47,5 @@ public enum AppError: Error, Equatable {
     case invalidCityName
     case networkError(error: Error)
     case apiError(message: String)
+    case invalidTime
 }

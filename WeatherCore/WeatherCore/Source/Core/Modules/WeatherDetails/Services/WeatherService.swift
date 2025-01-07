@@ -28,11 +28,28 @@ struct WeatherService: WeatherServiceProtocol {
     }
     
     func loadWeatherForecast() async throws -> [WeatherDisplayData] {
-        
+        // Fetch weather data from the repository
         let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchWeatherForcast)
-        return weatherDataArray.map {
-            createWeatherDisplayData(from: $0, isCurrentWeather: false)
-        }
+        
+        // Get the next full hour, or throw an error if unavailable
+        let nextFullHour = try Date.nextHourRoundDate() ?? {
+            throw AppError.invalidTime
+        }()
+        
+        // Filter and map weather data
+        let filteredForecastData = weatherDataArray
+            .compactMap { forecast -> WeatherDisplayData? in
+                guard
+                    let forecastDate = Date.parseForecastTimestamp(forecast.timestampLocal),
+                    forecastDate >= nextFullHour
+                else {
+                    return nil
+                }
+                return createWeatherDisplayData(from: forecast, isCurrentWeather: false)
+            }
+            .prefix(24)
+        
+        return Array(filteredForecastData)
     }
     
     func dismissWeatherSDK(error: Error?) {
