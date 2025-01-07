@@ -14,7 +14,10 @@ struct DefaultIdleView: View {
             .font(.headline)
             .foregroundColor(.gray)
             .padding()
+            .background(AppColors.primaryBackground.color)
+
     }
+    
 }
 
 #Preview {

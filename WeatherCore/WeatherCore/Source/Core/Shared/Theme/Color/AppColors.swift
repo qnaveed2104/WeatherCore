@@ -15,6 +15,7 @@ enum AppColors {
     case textPlaceholder
     case textBorder
     case navBarColor
+    case primaryBackground
     
     var color: Color {
         switch self {
@@ -32,6 +33,9 @@ enum AppColors {
             return Color("TextBorder")
         case .navBarColor:
             return Color("NavBarColor")
+        case.primaryBackground:
+            return Color("PrimaryBackground")
+
         }
     }
 }

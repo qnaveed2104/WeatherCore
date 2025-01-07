@@ -20,12 +20,10 @@ struct WeatherView: View {
                         CurrentWeatherView(currentWeather: weatherDetails.currentWeather)
                         ForecastListView(weatherForecast: weatherDetails.weatherForecast)
                     }
-                },
-                errorView: { error in
-                    DefaultErrorView(error: error)
                 }
             )
-            .toolbarBackground(AppColors.navBarColor.color, for: .navigationBar) // Change nav bar color
+            .background(AppColors.primaryBackground.color)
+            .toolbarBackground(AppColors.navBarColor.color, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .navigationBarTitle(AppConstants.DisplayMessages.header, displayMode: .inline)
             .toolbar {
@@ -34,6 +32,8 @@ struct WeatherView: View {
                 }
             }
         }
+        .background(AppColors.primaryBackground.color)
+
     }
     
     private var backButton: some View {

@@ -16,6 +16,8 @@ struct DefaultLoadingView: View {
                 .progressViewStyle(CircularProgressViewStyle())
                 .padding(paddingAmount)
         }
+        .background(AppColors.primaryBackground.color)
+
     }
 }
 

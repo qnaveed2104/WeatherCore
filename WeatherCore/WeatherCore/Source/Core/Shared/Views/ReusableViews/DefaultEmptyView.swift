@@ -17,6 +17,8 @@ struct DefaultEmptyView: View {
                 .padding()
             Spacer()
         }
+        .background(AppColors.primaryBackground.color)
+
     }
 }
 

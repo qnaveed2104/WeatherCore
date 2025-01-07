@@ -23,9 +23,14 @@ struct CurrentWeatherView: View {
             } else {
                 DefaultLoadingView(loadingText: "Loading current weather...")
                     .padding()
+                    .background(Color.primaryBackground)
+
             }
         }
+        .background(Color.primaryBackground)
+
     }
+    
 }
 
 #Preview {

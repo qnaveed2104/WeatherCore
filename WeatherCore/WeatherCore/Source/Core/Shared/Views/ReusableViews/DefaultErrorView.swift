@@ -15,6 +15,8 @@ struct DefaultErrorView: View {
             WeatherViewWithTheme("An error occurred", style: .heading1, color: Color.red)
             WeatherViewWithTheme(errorMessage, style: .customFont).padding(.horizontal)
         }
+        .background(AppColors.primaryBackground.color)
+
     }
         private var errorMessage: String {
             switch error {
@@ -48,6 +50,8 @@ struct DefaultErrorView: View {
                     return "Network error: \(error.localizedDescription)"
                 case .apiError(let message):
                     return "API Error: \(message)"
+                case .invalidTime:
+                    return "Invalid Time."
                 }
             default:
                 return error.localizedDescription

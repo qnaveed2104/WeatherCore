@@ -16,9 +16,11 @@ struct WeatherRow: View {
                 .padding(.leading, 5)
             WeatherViewWithTheme(forecast.formatedTemp, style: .title)
             WeatherViewWithTheme(forecast.skyCondition, style: .textRegular)
+            Spacer()
         }
         .padding(.vertical, 20)
-        
+        .background(AppColors.primaryBackground.color) 
+
     }
 }
 
