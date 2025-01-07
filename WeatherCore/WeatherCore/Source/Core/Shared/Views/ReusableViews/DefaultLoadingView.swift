@@ -12,12 +12,13 @@ struct DefaultLoadingView: View {
     var paddingAmount: CGFloat = 16.0
     var body: some View {
         VStack {
+            Spacer()
             ProgressView(loadingText)
                 .progressViewStyle(CircularProgressViewStyle())
                 .padding(paddingAmount)
+            Spacer()
         }
         .background(AppColors.primaryBackground.color)
-
     }
 }
 
