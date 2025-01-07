@@ -14,15 +14,10 @@ struct CurrentWeatherView: View {
         Group {
             if let weather = currentWeather {
                 VStack(spacing: 8) {
-                    Text(weather.cityName ?? "")
-                        .font(.subheadline)
-                    Text(weather.formatedTemp)
-                        .font(.system(size: 48, weight: .bold))
-                    Text(weather.skyCondition)
-                        .font(.body)
-                    Text("AT \(weather.fomattedTime)")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    WeatherViewWithTheme(weather.cityName ?? "", style: .textRegular)
+                    WeatherViewWithTheme(weather.formatedTemp, style: .heading1)
+                    WeatherViewWithTheme(weather.skyCondition, style: .textRegular)
+                    WeatherViewWithTheme(weather.fomattedTime, style: .label, color: AppColors.textSecondary.color)
                 }
                 .padding()
             } else {
@@ -36,7 +31,7 @@ struct CurrentWeatherView: View {
 #Preview {
     CurrentWeatherView(currentWeather: WeatherDisplayData(
         cityName: "Berlin",
-        formatedTemp: "20°",
+        formatedTemp: "20°C",
         fomattedTime: "AT LOCAL TIME 16:00)",
         skyCondition: "Clear")
     )

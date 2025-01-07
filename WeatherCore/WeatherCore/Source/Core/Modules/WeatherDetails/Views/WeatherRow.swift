@@ -11,13 +11,20 @@ struct WeatherRow: View {
     let forecast: WeatherDisplayData
     var body: some View {
         HStack {
-            Text(forecast.fomattedTime)
-                .font(.subheadline)
-            Text(forecast.formatedTemp)
-                .font(.subheadline)
-            Text(forecast.skyCondition)
-                .font(.subheadline)
+           
+            WeatherViewWithTheme(forecast.fomattedTime, style: .textRegular)
+            WeatherViewWithTheme(forecast.formatedTemp, style: .title)
+            WeatherViewWithTheme(forecast.skyCondition, style: .textRegular)
         }
         .padding(.vertical, 4)
     }
+}
+
+#Preview {
+    WeatherRow(forecast: WeatherDisplayData(
+        cityName: nil,
+        formatedTemp: "20°C",
+        fomattedTime: "16:00",
+        skyCondition: "Clear")
+    )
 }

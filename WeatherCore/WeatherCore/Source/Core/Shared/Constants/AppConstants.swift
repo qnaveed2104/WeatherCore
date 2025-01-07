@@ -34,10 +34,19 @@ enum AppConstants {
     struct DisplayFormats {
         static let temperature = "%.0f°C"
         static let lcoalTime: String = "AT %@ LOCAL TIME"
-        static let formatedCityName: String = "The Weather in %@ is:"
+        static let formatedCityName: String = "The weather in %@ is:"
+    }
+    
+    struct DisplayMessages {
+        static let header: String = "24 Hour Forecast"
     }
     
     struct DateFormats {
         static let TimeFormat: String = "HH:mm"
+    }
+    
+    struct FontNames {
+        static let bold: String = "Satoshi-Bold"
+        static let medium: String = "Satoshi-Medium"
     }
 }

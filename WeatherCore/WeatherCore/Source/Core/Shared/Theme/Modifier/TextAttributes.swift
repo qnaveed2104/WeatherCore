@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ThemedText: ViewModifier {
+struct TextAttributes: ViewModifier {
     let font: Font
     let color: Color
     
@@ -20,6 +20,6 @@ struct ThemedText: ViewModifier {
 
 extension View {
     func themedText(font: Font, color: Color) -> some View {
-        self.modifier(ThemedText(font: font, color: color))
+        self.modifier(TextAttributes(font: font, color: color))
     }
 }
