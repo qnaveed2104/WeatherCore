@@ -11,12 +11,12 @@ struct WeatherRow: View {
     let forecast: WeatherDisplayData
     var body: some View {
         HStack {
-           
+            
             WeatherViewWithTheme(forecast.fomattedTime, style: .textRegular)
             WeatherViewWithTheme(forecast.formatedTemp, style: .title)
             WeatherViewWithTheme(forecast.skyCondition, style: .textRegular)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 20)
     }
 }
 

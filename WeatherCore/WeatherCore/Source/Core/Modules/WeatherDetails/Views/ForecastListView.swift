@@ -18,11 +18,11 @@ struct ForecastListView: View {
             } else {
                 // Display a list of forecasts
                 List(weatherForecast, id: \.fomattedTime) { forecast in
-                    // Replace with your actual layout for forecast items
                     WeatherRow(forecast: forecast)
+                        .listRowSeparatorTint(AppColors.textBorder.color)
+                        .listRowInsets(EdgeInsets())
                 }
-                .listStyle(PlainListStyle())
-
+                .listStyle(.plain)
             }
         }
     
@@ -30,9 +30,8 @@ struct ForecastListView: View {
 
 #Preview {
     ForecastListView(weatherForecast: [WeatherDisplayData(
-        cityName: "Berlin",
+        cityName: nil,
         formatedTemp: "20°",
-        fomattedTime: "AT LOCAL TIME 16:00)",
+        fomattedTime: "16:00",
         skyCondition: "Clear")])
 }
-
