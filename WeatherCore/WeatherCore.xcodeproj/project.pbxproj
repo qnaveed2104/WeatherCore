@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		708DA99D2D2EF27900766DAB /* WeatherConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 708DA99C2D2EF27900766DAB /* WeatherConnect */; };
 		7092797A2D2944D00008DFBA /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 709279792D2944D00008DFBA /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				708DA99D2D2EF27900766DAB /* WeatherConnect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +144,7 @@
 			);
 			name = WeatherCore;
 			packageProductDependencies = (
+				708DA99C2D2EF27900766DAB /* WeatherConnect */,
 			);
 			productName = WeatherCore;
 			productReference = 7092794C2D2943B60008DFBA /* WeatherCore.app */;
@@ -225,6 +228,9 @@
 			);
 			mainGroup = 709279432D2943B60008DFBA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				708DA99B2D2EF27900766DAB /* XCLocalSwiftPackageReference "../../../../Desktop/WeatherConnect" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7092794D2D2943B60008DFBA /* Products */;
 			projectDirPath = "";
@@ -619,6 +625,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		708DA99B2D2EF27900766DAB /* XCLocalSwiftPackageReference "../../../../Desktop/WeatherConnect" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../../Desktop/WeatherConnect;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		708DA99C2D2EF27900766DAB /* WeatherConnect */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WeatherConnect;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 709279442D2943B60008DFBA /* Project object */;
 }
