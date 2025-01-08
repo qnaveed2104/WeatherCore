@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WeatherConnect
 class MainViewModel: ObservableObject {
     var weatherSdk: WeatherSDK?
     @Published var isWeatherViewPresented: Bool = false
