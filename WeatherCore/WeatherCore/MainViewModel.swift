@@ -25,7 +25,6 @@ class MainViewModel: ObservableObject {
         return await sdk.getWeather()
     }
     
-
 }
 extension MainViewModel: WeatherSDKDelegate {
     func onFinished() {
