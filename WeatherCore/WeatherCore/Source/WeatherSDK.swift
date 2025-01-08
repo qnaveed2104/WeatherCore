@@ -27,12 +27,13 @@ public final class WeatherSDK {
     /// Returns the  view with the city weather details
     /// - Parameter city: name of city whch details to be feteched
     /// - Returns: View that show the details of the weather
-    func getWeather() -> AnyView {
-        let viewModel = createWeatherViewModel()
+    @MainActor public func getWeather() async -> AnyView {
+        let viewModel = await createWeatherViewModel()
         return AnyView(WeatherView(viewModel: viewModel))
     }
     
-    private func createWeatherViewModel() -> WeatherViewModel {
+    @MainActor
+    private func createWeatherViewModel() async -> WeatherViewModel {
         let apiClient: APIClientProtocol = APIClient()
         let requestBuilder: WeatherRequestBuilderProtocol = WeatherRequestBuilder(configurations: configuration)
         let weatherRepository: WeatherRepositoryProtocol = WeatherRepository(
@@ -44,9 +45,8 @@ public final class WeatherSDK {
             repository: weatherRepository
         )
         let viewModel: WeatherViewModel =  WeatherViewModel(service: weatherservice)
-        Task {
-            await viewModel.fetchWeatherData()
-        }
+        
+        await viewModel.fetchWeatherData()
         return viewModel
     }
 }

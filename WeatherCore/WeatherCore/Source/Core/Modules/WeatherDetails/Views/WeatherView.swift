@@ -27,10 +27,13 @@ struct WeatherView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .navigationBarTitle(AppConstants.DisplayMessages.header, displayMode: .inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     backButton
                 }
+
             }
+            .navigationBarBackButtonHidden(true)
+
         }
         .background(AppColors.primaryBackground.color)
 

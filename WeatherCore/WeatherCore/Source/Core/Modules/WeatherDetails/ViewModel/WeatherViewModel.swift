@@ -32,10 +32,12 @@ class WeatherViewModel: WeatherViewModelProtocol, AppStateProtocol {
     func fetchWeatherData() async {
         self.state = .loading
         do {
-            async let currentWeatherTask: WeatherDisplayData? = loadCurrentWeather()
-            async let weatherForecastTask: [WeatherDisplayData] =  loadWeatherForecast()
+            let currentWeatherTask = Task { try await self.loadCurrentWeather() }
+            let weatherForecastTask = Task { try await self.loadWeatherForecast() }
             
-            let (currentWeather, weatherForecast) = try await (currentWeatherTask, weatherForecastTask)
+            let currentWeather = try await currentWeatherTask.value
+            let weatherForecast = try await weatherForecastTask.value
+            
             let weatherDetails = WeatherDetails(currentWeather: currentWeather, weatherForecast: weatherForecast)
             
             if weatherDetails.isEmpty {

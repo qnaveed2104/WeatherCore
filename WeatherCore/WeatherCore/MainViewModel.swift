@@ -8,7 +8,8 @@
 import SwiftUI
 class MainViewModel: ObservableObject {
     var weatherSdk: WeatherSDK?
-    
+    @Published var isWeatherViewPresented: Bool = false
+
     init(weatherSdk: WeatherSDK? = nil) {
         self.weatherSdk = weatherSdk
         getWeather(apiKey: "f8c11bda6cdc4b0c8ad517e57775cc54", cityName: "Berlin")
@@ -19,14 +20,12 @@ class MainViewModel: ObservableObject {
         weatherSdk =  try? WeatherSDK(configuration: configuration, delegate: self)
     }
     
-    func getCurrentWeatherView() -> AnyView? {
-        // Example view, replace with actual logic
-        return AnyView(weatherSdk?.getWeather() )
+    func getWeatherView() async -> AnyView? {
+        guard let sdk = weatherSdk else { return nil }
+        return await sdk.getWeather()
     }
     
-    func getWeatherSDKView( ) -> AnyView {
-        return AnyView(weatherSdk?.getWeather())
-    }
+
 }
 extension MainViewModel: WeatherSDKDelegate {
     func onFinished() {

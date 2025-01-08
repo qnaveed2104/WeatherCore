@@ -9,25 +9,34 @@ import SwiftUI
 
 struct ClientAppContentView: View {
     @ObservedObject var viewModel: MainViewModel
-    @State private var isWeatherViewPresented = false // Track the modal presentation state
+    @State private var weatherView: AnyView?
     var body: some View {
-           NavigationStack {
-               Button(action: {
-                   // Trigger SDK-related logic here, if needed.
-                   // Then, present WeatherView modally.
-                   isWeatherViewPresented = true
-               }, label: {
-                   Text("Launch SDK")
-               })
-               .padding()
-               
-               // Present the weather view as a full-screen modal
-               .fullScreenCover(isPresented: $isWeatherViewPresented, content: {
-                   viewModel.getWeatherSDKView()
-                       .edgesIgnoringSafeArea(.all) // Make sure the modal occupies the full screen
-               })
-           }
-       }
+        NavigationStack {
+            VStack {
+                Button("Show Weather View") {
+                    loadWeatherView()
+                }
+            }
+            .navigationDestination(isPresented: $viewModel.isWeatherViewPresented) {
+                if let weatherView = weatherView {
+                    weatherView
+                }
+            }
+        }
+    }
+    
+    private func loadWeatherView() {
+        Task {
+            if let view = await viewModel.getWeatherView() {
+                DispatchQueue.main.async {
+                    self.weatherView = view
+                    viewModel.isWeatherViewPresented = true
+                }
+            } else {
+                print("Failed to load WeatherView")
+            }
+        }
+    }
 }
 
 #Preview {
