@@ -7,22 +7,36 @@
 
 import Foundation
 
+/// Protocol defining the methods required for an API client.
 protocol APIClientProtocol {
     
     var decoder: DecoderProtocol { get set }
+    
+    /// Fetches data from the server.
+    /// - Parameters:
+    ///   - urlRequest: The request to be sent.
+    ///   - responseType: The expected type of the response.
+    /// - Returns: A `Result` containing the decoded response or an `AppError`.
     func getDataFromServer<T: Decodable>(
         urlRequest: URLRequest,
         responseType: T.Type
     ) async -> Result<T, AppError>
 }
 
+/// Default implementation of `APIClientProtocol`.
 struct APIClient: APIClientProtocol {
+    /// Decoder used to decode responses from the server.
     var decoder: DecoderProtocol
     
+    /// Initializes the API client with a default decoder.
     init(decoder: DecoderProtocol = JSONDataDecoder()) {
         self.decoder = decoder
     }
-    
+    /// Fetches data from the server and decodes the response.
+    /// - Parameters:
+    ///   - urlRequest: The URLRequest to be sent to the server.
+    ///   - responseType: The expected type of the response (conforming to `Decodable`).
+    /// - Returns: A `Result` containing either the decoded model or an `AppError`.
     func getDataFromServer<T: Decodable>(
         urlRequest: URLRequest,
         responseType: T.Type
@@ -38,6 +52,7 @@ struct APIClient: APIClientProtocol {
             
             let statusCode = httpResponse.statusCode
             
+            // Handle non-2xx status codes
             if !(200...299).contains(statusCode) {
                 if let errorMessage = try? decoder.decodeAPIError(data: data) {
                     return .failure(AppError.apiError(message: errorMessage))
@@ -47,10 +62,12 @@ struct APIClient: APIClientProtocol {
                 }
             }
             
+            // Handle empty data response
             if data.isEmpty {
                 return .failure(.httpError(statusCode: statusCode))
             }
             
+            // Attempt to decode the response data into the expected model
             do {
                 let model = try decoder.decodeObject(objectType: T.self, data: data)
                 return .success(model)

@@ -7,26 +7,45 @@
 
 import Foundation
 
+/// A protocol defining the methods for interacting with the weather data service.
 protocol WeatherServiceProtocol {
     var repository: WeatherRepositoryProtocol { get }
     var weatherSDKDelegate: WeatherSDKDelegate { get }
+    /// Fetches the current weather data.
     func loadCurrentWeather() async throws -> WeatherDisplayData
+    /// Fetches the weather forecast data.
     func loadWeatherForecast() async throws -> [WeatherDisplayData]
+    /// Dismisses the Weather SDK and reports any errors.
     func dismissWeatherSDK(error: Error?)
 }
 
+/// A struct that implements the `WeatherServiceProtocol` to handle the fetching of weather data.
+///
+/// It fetches current weather data and weather forecasts from the repository and formats the results
+/// into displayable data. It also communicates with the `WeatherSDKDelegate` to report success or errors.
 struct WeatherService: WeatherServiceProtocol {
     let weatherSDKDelegate: WeatherSDKDelegate
     let repository: WeatherRepositoryProtocol
     
+    /// Fetches the current weather data asynchronously.
+    /// - Throws: An error if fetching or processing the data fails.
+    /// - Returns: The current weather data to display.
+    
     func loadCurrentWeather() async throws -> WeatherDisplayData {
+        // Fetch weather data from the repository
         let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchCurrentWeather)
+        // Ensure that the fetched data is valid
         guard let weatherData = weatherDataArray.first else {
             throw AppError.invalidResponse
         }
+        // Create and return the formatted display data
         return createWeatherDisplayData(from: weatherData, isCurrentWeather: true)
     }
     
+    
+    /// Fetches the weather forecast data asynchronously.
+    /// - Throws: An error if fetching or processing the data fails.
+    /// - Returns: A list of weather forecast data to display.
     func loadWeatherForecast() async throws -> [WeatherDisplayData] {
         // Fetch weather data from the repository
         let weatherDataArray = try await fetchWeatherData(fetchOperation: repository.fetchWeatherForcast)
@@ -36,7 +55,7 @@ struct WeatherService: WeatherServiceProtocol {
             throw AppError.invalidTime
         }()
         
-        // Filter and map weather data
+        // Filter and map the weather data to create display data
         let filteredForecastData = weatherDataArray
             .compactMap { forecast -> WeatherDisplayData? in
                 guard
@@ -52,24 +71,31 @@ struct WeatherService: WeatherServiceProtocol {
         return Array(filteredForecastData)
     }
     
+    /// Dismisses the Weather SDK and reports success or failure to the delegate.
+    /// - Parameter error: The error that occurred, if any.
     func dismissWeatherSDK(error: Error?) {
         if let error = error {
+            // Report the error to the delegate
             weatherSDKDelegate.onFinishedWithError(error)
         } else {
+            // Indicate that the operation finished successfully
             weatherSDKDelegate.onFinished()
         }
     }
     
+    // Private helper method to fetch weather data using the repository.
     private func fetchWeatherData(
         fetchOperation: () async throws -> WeatherResponse
     ) async throws -> [WeatherData] {
         let weatherResponse = try await fetchOperation()
+        // Ensure the fetched data is not empty
         guard let data = weatherResponse.data, !data.isEmpty else {
             throw AppError.invalidResponse
         }
         return data
     }
     
+    // Private helper method to create formatted display data from raw weather data.
     private func createWeatherDisplayData(from data: WeatherData, isCurrentWeather: Bool) -> WeatherDisplayData {
         WeatherDisplayData(
             cityName: isCurrentWeather
@@ -84,6 +110,7 @@ struct WeatherService: WeatherServiceProtocol {
         )
     }
     
+    // Private helper method to format Unix timestamp into a readable string.
     private func formatUnixTimestamp(_ timestamp: Int?) -> String {
         guard let timestamp = timestamp else {
             return "NA"

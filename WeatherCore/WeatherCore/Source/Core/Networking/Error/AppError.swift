@@ -5,7 +5,10 @@
 //  Created by Qazi on 04/01/2025.
 //
 
+/// Enum representing various errors that can occur in the app.
 public enum AppError: Error, Equatable {
+    
+    // Conformance to Equatable for custom error comparison
     public static func == (lhs: AppError, rhs: AppError) -> Bool {
             switch (lhs, rhs) {
             case (.invalidResponse, .invalidResponse),
@@ -32,6 +35,8 @@ public enum AppError: Error, Equatable {
                 return false
             }
         }
+    
+    // Various error cases for different failure scenarios
     case invalidResponse
     case unknownError
     case decodingError(error: Error)
