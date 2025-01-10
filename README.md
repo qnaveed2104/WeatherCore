@@ -1,6 +1,6 @@
 # WeatherCore
 
-WeatherCore is a module designed to fetch, process, and present weather data within an iOS app. It integrates with external weather APIs to retrieve current weather data and weather forecasts, providing an abstraction layer for network calls, data decoding, and error handling.
+WeatherCore is a module designed to fetch, process, and present weather data within an iOS app. It integrates with external weather APIs to retrieve current weather data and weather forecasts, providing an abstraction layer for network calls, data decoding, and error handling.This project acts as a Debuging tool to create WeatherConnect.
 
 ## Overview
 
