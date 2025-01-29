@@ -54,7 +54,6 @@ class WeatherViewModel: WeatherViewModelProtocol, AppStateProtocol {
             async let currentWeatherTask: WeatherDisplayData? = loadCurrentWeather()
             async let weatherForecastTask: [WeatherDisplayData] =  loadWeatherForecast()
             
-            
             // Wait for both tasks to finish and process the result.
             let (currentWeather, weatherForecast) = try await (currentWeatherTask, weatherForecastTask)
             

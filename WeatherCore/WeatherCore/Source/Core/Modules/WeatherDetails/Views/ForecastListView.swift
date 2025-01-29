@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 struct ForecastListView: View {
     let weatherForecast: [WeatherDisplayData]
     

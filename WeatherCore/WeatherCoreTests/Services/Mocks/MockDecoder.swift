@@ -8,6 +8,10 @@ import Foundation
 @testable import WeatherCore
 
 class MockDecoder: WeatherCore.DecoderProtocol {
+    func decodeAPIError(data: Data) throws -> String {
+        return ""
+    }
+    
     func decodeObject<T>(
         objectType: T.Type, data: Data
     ) throws -> T where T: Decodable {

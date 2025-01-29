@@ -38,10 +38,10 @@ struct MockWeatherData {
     }
     
     static func getWeatherData(
-        timestampLocal: String = "2010-12-23T12:34:56Z",
+        timestampLocal: String = "2025-01-28:14",
         cityName: String = "Berlin",
         countryCode: String = "GB",
-        timestamp: Int = 1503936000,
+        timestamp: Int = 1738072800,
         skyCondition: String,
         weather: Weather) -> WeatherData {
         WeatherData(

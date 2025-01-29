@@ -45,6 +45,9 @@ public final class WeatherSDK {
     /// - Returns: A `WeatherViewModel` configured to fetch and manage weather data.
     private func createWeatherViewModel() -> WeatherViewModel {
         let apiClient: APIClientProtocol = APIClient()
+        // SRP // Open close // liskov prin
+        // interface segration
+        
         let requestBuilder: WeatherRequestBuilderProtocol = WeatherRequestBuilder(configurations: configuration)
         let weatherRepository: WeatherRepositoryProtocol = WeatherRepository(
             apiClient: apiClient,
@@ -55,8 +58,8 @@ public final class WeatherSDK {
             repository: weatherRepository
         )
         let viewModel: WeatherViewModel =  WeatherViewModel(service: weatherservice)
-        Task {
-            await viewModel.fetchWeatherData()
+        Task { [weak viewModel] in
+            await viewModel?.fetchWeatherData()
         }
         return viewModel
     }

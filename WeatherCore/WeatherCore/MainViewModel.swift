@@ -11,7 +11,7 @@ class MainViewModel: ObservableObject {
     
     init(weatherSdk: WeatherSDK? = nil) {
         self.weatherSdk = weatherSdk
-        getWeather(apiKey: "f8c11bda6cdc4b0c8ad517e57775cc54", cityName: "Berlin")
+        getWeather(apiKey: "6ac62e830e334742924401be0e80573d", cityName: "Berlin")
     }
     
     func getWeather(apiKey: String, cityName: String) {
